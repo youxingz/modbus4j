@@ -65,6 +65,7 @@ import com.serotonin.modbus4j.sero.util.ProgressiveTask;
  */
 abstract public class ModbusMaster extends Modbus {
     private boolean debug = false;
+    private MessageControl conn;
 
     private int timeout = 500;
     private int retries = 2;
@@ -447,6 +448,9 @@ abstract public class ModbusMaster extends Modbus {
 
     public void enableDebug(boolean debug) {
         this.debug = debug;
+        if (conn != null) {
+            conn.DEBUG = debug;
+        }
     }
 
     //
@@ -459,7 +463,7 @@ abstract public class ModbusMaster extends Modbus {
      * @return a {@link com.serotonin.modbus4j.sero.messaging.MessageControl} object.
      */
     protected MessageControl getMessageControl() {
-        MessageControl conn = new MessageControl();
+        conn = new MessageControl();
         conn.setRetries(getRetries());
         conn.setTimeout(getTimeout());
         conn.setDiscardDataDelay(getDiscardDataDelay());
