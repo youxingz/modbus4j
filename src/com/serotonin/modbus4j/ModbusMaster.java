@@ -5,12 +5,12 @@
  *
  * Copyright (C) 2006-2011 Serotonin Software Technologies Inc. http://serotoninsoftware.com
  * @author Matthew Lohbihler
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -64,6 +64,8 @@ import com.serotonin.modbus4j.sero.util.ProgressiveTask;
  * @version 5.0.0
  */
 abstract public class ModbusMaster extends Modbus {
+    private boolean debug = false;
+
     private int timeout = 500;
     private int retries = 2;
 
@@ -113,7 +115,6 @@ abstract public class ModbusMaster extends Modbus {
 
     private final Map<Integer, SlaveProfile> slaveProfiles = new HashMap<>();
     protected boolean initialized;
-
     /**
      * <p>init.</p>
      *
@@ -444,6 +445,10 @@ abstract public class ModbusMaster extends Modbus {
         return results;
     }
 
+    public void enableDebug(boolean debug) {
+        this.debug = debug;
+    }
+
     //
     //
     // Protected methods
@@ -460,6 +465,7 @@ abstract public class ModbusMaster extends Modbus {
         conn.setDiscardDataDelay(getDiscardDataDelay());
         conn.setExceptionHandler(getExceptionHandler());
         conn.setIoLog(ioLog);
+        conn.DEBUG = debug; // 2023-04-27 add debug option.
         return conn;
     }
 
